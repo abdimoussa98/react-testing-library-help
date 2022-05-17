@@ -117,7 +117,6 @@ export default function ImageUpload(
     if (aspect) {
       const { width, height } = e.currentTarget;
       console.log('in onLoad');
-      console.log(e.currentTarget);
       console.log('image ref natural width: ' + imageRef.current?.naturalWidth);
       console.log(
         'image ref natural height: ' + imageRef.current?.naturalHeight,
@@ -246,14 +245,14 @@ export default function ImageUpload(
             color="primary"
             {...(handleSubmit && { onClick: handleSubmit })}
           >
-            Save
+            Submit
           </Button>
           <Button
             color="secondary"
             onClick={handleClose}
             data-testid="back-button"
           >
-            Cancel
+            Close
           </Button>
         </Box>
       </Grid>

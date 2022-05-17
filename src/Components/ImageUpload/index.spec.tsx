@@ -59,13 +59,14 @@ describe('<ImageUpload />', () => {
       'src',
       expect.stringContaining('data'),
     );
+    screen.debug(imageElement);
 
     fireEvent.load(imageElement);
-    const saveButton = screen.getByRole('button', {
-      name: /save/i,
+    const submitButton = screen.getByRole('button', {
+      name: /submit/i,
     });
 
-    userEvent.click(saveButton);
+    userEvent.click(submitButton);
 
     await waitFor(() => expect(handleSave).toBeCalledTimes(1));
     await waitFor(() =>

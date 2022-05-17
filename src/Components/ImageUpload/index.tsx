@@ -55,9 +55,7 @@ export default function ImageUpload(
     console.log('inside handleCropping()');
     if (!imageRef.current) return;
     const imageElement = imageRef.current;
-    // console.log('image ref below');
-    // console.log(imageElement.src);
-    console.log('crop val below');
+    console.log('crop value below');
     console.log(crop);
     const canvas = document.createElement('canvas');
     const scaleX = imageElement.naturalWidth / imageElement.width;
@@ -65,8 +63,6 @@ export default function ImageUpload(
     canvas.width = crop.width;
     canvas.height = crop.height;
     const ctx = canvas.getContext('2d');
-    console.log('after ctx');
-
     const pixelRatio = window.devicePixelRatio;
     canvas.width = crop.width * pixelRatio;
     canvas.height = crop.height * pixelRatio;
@@ -142,11 +138,9 @@ export default function ImageUpload(
   }, [completedCrop]);
 
   useEffect(() => {
-    console.log('in useEffect for result dependency');
-    console.log(result);
     urltoFile(result, result, 'image/jpeg').then(function (file) {
       if (file)
-        console.log('file size after urltoFile() and after crop: ' + file.size);
+        console.log('file size after crop: ' + file.size);
       setImageFile(file);
     });
   }, [result]);
@@ -252,7 +246,7 @@ export default function ImageUpload(
             color="primary"
             {...(handleSubmit && { onClick: handleSubmit })}
           >
-            Submit
+            Save
           </Button>
           <Button
             color="secondary"

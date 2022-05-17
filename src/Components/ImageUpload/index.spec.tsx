@@ -1,9 +1,11 @@
 import React from 'react';
 import ImageUpload from './index';
 import userEvent from '@testing-library/user-event';
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import { fireEvent, render, screen, waitFor} from '@testing-library/react'
 import path from 'path';
 import '@testing-library/jest-dom'
+import * as fs from 'fs';
+
 
 declare let window: { fetch: jest.Mock };
 
@@ -20,15 +22,15 @@ describe('<ImageUpload />', () => {
   });
 
   it('should save when image is selected and crop not adjusted', async () => {
+    require('jest-canvas-mock');
+
     let isModalOpen = true;
     const handleClose = jest.fn(() => {
       isModalOpen = false;
     });
     const handleSave = jest.fn();
-    const file = new File(['101010101010'], 'file.png', {
-      type: 'image/png',
-    });
-    const croppedFileSize = file.size; //current value is intialFileSize --> change to croppedFileSize
+
+    const initialCroppedFileSize = 689671;
 
     render(
       <ImageUpload
@@ -38,21 +40,16 @@ describe('<ImageUpload />', () => {
       />,
     );
 
-    const fs = require('fs');
-    require('jest-canvas-mock');
-
     const data = await fs.promises.readFile(
-      path.join(__dirname, '../ImageUpload') + '/citizenchain.png',
+      path.join(__dirname, '../ImageUpload') + '/testImage.png',
     );
-    const mockImage = new File([data.buffer], 'citizenchain.png', {
+    const mockImage = new File([data.buffer], 'testImage.png', {
       type: 'image/png',
     });
 
     const uploadInput = document.getElementById('contained-button-file');
 
     userEvent.upload(uploadInput!!, mockImage);
-
-    // userEvent.upload(uploadInput!!, file);
 
     expect(await screen.findByTestId('image-crop')).toBeInTheDocument();
 
@@ -76,6 +73,6 @@ describe('<ImageUpload />', () => {
     );
     expect(
       handleSave.mock.calls[handleSave.mock.calls.length - 1][0].size,
-    ).toBe(croppedFileSize);
+    ).toBe(initialCroppedFileSize);
   });
 });
